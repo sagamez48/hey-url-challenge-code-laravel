@@ -14,3 +14,8 @@
 Route::get('/', 'UrlController@index');
 Route::resource('urls', 'UrlController', ['except'=> ['index']]);
 Route::get('/{url}', 'UrlController@visit');
+Route::post('/urls/create', 'UrlController@create');
+
+Route::bind('url', function ($value) {
+    return App\Url::where('short_url', $value)->first() ?? abort(404);
+});

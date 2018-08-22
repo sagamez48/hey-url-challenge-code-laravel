@@ -16,10 +16,11 @@ class CreateClicksTable extends Migration
         Schema::create('clicks', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('url_id');
-            $table->foreign('url_id')->references('id')->on('urls');
             $table->string('browser');
             $table->string('platform');
             $table->timestamps();
+
+            $table->foreign('url_id')->references('id')->on('urls');
         });
     }
 
