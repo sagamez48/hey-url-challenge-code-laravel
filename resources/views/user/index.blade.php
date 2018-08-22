@@ -49,7 +49,7 @@
     </tr>
   </thead>
   <tbody>
-    @foreach ($urls as $url)
+    @foreach ($latest_urls as $url)
       <tr>
         <th scope="row"><a href="{{ url($url->short_url) }}">{{ url($url->short_url) }}</a></th>
         <td><a href="{{ $url->original_url }}">{{ $url->original_url }}</a></td>

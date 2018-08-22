@@ -1,30 +1,31 @@
 <?php namespace App\Http\Controllers;
+
 use App\Url;
-use App\Click;
+use App\UrlService;
 use App\Http\Requests\CreateUrlRequest;
 use Illuminate\Http\Request;
-use Jenssegers\Agent\Agent;
 
 class UrlController extends Controller
 {
+    private $urls;
+
+    public function __construct(UrlService $urls)
+    {
+        $this->urls = $urls;
+    }
+
     public function index(Request $request)
     {
-        $url = new Url();
-        $urls = Url::limit(10)->get();
-
-        return view('user.index', compact('url', 'urls'));
+        return view('user.index')
+            ->with('url', $this->urls->getModel())
+            ->with('latest_urls', $this->urls->getLatest(10));
     }
 
     public function create(CreateUrlRequest $request)
     {
-        $url = Url::create([
-            'short_url' => Url::makeId(),
-            'original_url' => $request->input('original_url'),
-        ]);
-
-        if (! $url) {
-            return redirect('/')
-                ->withError('Unable to create URL');
+        if (! $this->urls->createFromRequest($request)) {
+            // TODO: Get a MessageBag from the urls service
+            return redirect('/')->withError('Unable to create URL');
         }
 
         return redirect('/')->with(['notice' => 'Successfully added a URL']);
@@ -32,21 +33,10 @@ class UrlController extends Controller
 
     public function visit(Url $url)
     {
-        $agent = new Agent();
-        $browser = $agent->browser();
-        $platform = $agent->platform();
-
-        $url->clicks_count++;
-
-        Click::create([
-            'url_id' => $url->id,
-            'browser' => $browser,
-            'platform' => $platform,
-        ]);
+        $this->urls->trackClick($url);
 
         return redirect($url->original_url);
     }
-
 
     public function show()
     {

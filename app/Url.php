@@ -13,4 +13,9 @@ class Url extends Model
     {
         return str_random(5);
     }
+
+    public function clicks()
+    {
+        return $this->hasMany(Click::class);
+    }
 }
