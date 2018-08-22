@@ -1,11 +1,18 @@
 @extends('layouts.app')
 @section('content')
-  @if(Session::has('notice'))
-    <div class="card-panel notice deep-orange">{{Session::get('notice')}}</div>
+  @if ($errors->any())
+    <div class="card-panel notice deep-orange">
+      @foreach ($errors->all() as $error)
+           <li>{{ $error }}</li>
+       @endforeach
+    </div>
+  @endif
+  @if (Session::has('notice'))
+    <div class="card-panel notice deep-orange">{{ Session::get('notice') }}</div>
   @endif
   <div class="row">
     <div class="col m12">
-      {{Form::model($url, array('route' => 'urls.create'))}}
+      {{ Form::model($url, ['route' => 'urls.create']) }}
       <div class="card">
         <div class="card-content">
           <div class="row">
@@ -15,9 +22,10 @@
           </div>
           <div class="row">
             <div class="col m6 offset-m2">
-              {{ Form::text('original_url', "", array(
+              {{ Form::text('original_url', 'http://', array(
                 'class' => 'validate form-control',
-                'placeholder' => 'Your original URL here')
+                'placeholder' => 'Your original URL here',
+              )
               )
             }}
           </div>

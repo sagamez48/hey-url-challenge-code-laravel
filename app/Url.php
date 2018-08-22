@@ -1,10 +1,16 @@
-<?php
-
-namespace App;
+<?php namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Requests\CreateUrlRequest;
 
 class Url extends Model
 {
- protected $fillable = ['short_url', 'original_url', 'created_at', 'clicks_count'];   //TO-DO it should only include short_url.
+    protected $fillable = ['short_url', 'original_url', 'clicks_count'];
+
+    public $timestamps = true;
+
+    public static function makeId()
+    {
+        return str_random(5);
+    }
 }
