@@ -1,5 +1,10 @@
 # HeyURL! Code Challenge
 
+## Overview
+HeyURL! is a service to create awesome friendly URLs to make it easier for
+people to remember. Our team developed some mock views but they lack our awesome
+functionality.
+
 ## Getting Started
 
 1. Clone repository
@@ -37,6 +42,15 @@ month along with a breakdown of browsers and platforms
 404 page
 - Unit Tests should be created which cover the code that is added as applicable
 
+## Spec for generating short URLs
+
+- It MUST have 5 characters in length e.g. NELNT
+- It MUST generate only upper case letters
+- It MUST NOT generate special characters
+- It MUST NOT generate whitespace
+- It MUST be unique
+- `short_url` attribute should store only the generated code
+
 ## Considerations
 
 1. Check routes defined in `routes/web.rb`
@@ -45,3 +59,50 @@ month along with a breakdown of browsers and platforms
 4. Check models in `app/*`
 5. Google Charts is already added to display charts, you can use any library
 6. Use the `jenssegers/agent` lib already installed to extract information about each click tracked
+
+## API - Optional Bonus Points
+
+We would like to have a way to retrieve the last 10 URLs created using an API
+endpoint. It should be JSON-API complaint. Here is an example of a response from
+the API:
+
+```
+{
+  "data": [
+    {
+      "type": "urls",
+      "id": "1",
+      "attributes": {
+        "created-at": "2018-08-15T02:48:08.642Z",
+        "original-url": "www.fullstacklabs.co/angular-developers",
+        "url": "https://domain/fss1",
+        "clicks": 2
+      },
+      "relationships": {
+        "clicks": {
+          "data": [
+            {
+              "id": 1,
+              "type": "clicks"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "clicks",
+      "id": 1,
+      "attributes": {
+        ...
+      }
+    }
+  ]
+}
+```
+
+## Accomplishment
+- Completed functionality 65%
+- Completed test 20%
+- Completed bonus 15%
